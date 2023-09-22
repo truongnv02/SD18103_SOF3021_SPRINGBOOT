@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
-import java.util.UUID;
 
 @Controller
 @RequestMapping("/admin/ctsp")
@@ -69,8 +68,16 @@ public class ChiTietSPController {
     }
 
     @PostMapping("/store")
-    public String store(@Valid @ModelAttribute("ctsp") ChiTietSPDTO chiTietSPDTO, BindingResult result, Model model) {
+    public String store( Model model, @Valid @ModelAttribute("ctsp") ChiTietSPDTO chiTietSPDTO, BindingResult result) {
         if(result.hasErrors()) {
+            List<SanPham> listSanPham = sanPhamService.getAll();
+            List<NSX> listNSX = nsxService.getAll();
+            List<DongSP> listDongSP = dongSPService.getAll();
+            List<MauSac> listMauSac = mauSacService.getAll();
+            model.addAttribute("listSanPham", listSanPham);
+            model.addAttribute("listNSX", listNSX);
+            model.addAttribute("listDongSP", listDongSP);
+            model.addAttribute("listMauSac", listMauSac);
             return "admin/ctsp/create";
         }else {
             chiTietSPService.saveOrUpdate(chiTietSPDTO);
@@ -96,8 +103,16 @@ public class ChiTietSPController {
     }
 
     @PostMapping("/update/{id}")
-    public String update(@Valid @ModelAttribute("ctsp") ChiTietSPDTO chiTietSPDTO, BindingResult result) {
+    public String update(Model model, @Valid @ModelAttribute("ctsp") ChiTietSPDTO chiTietSPDTO, BindingResult result) {
         if(result.hasErrors()) {
+            List<SanPham> listSanPham = sanPhamService.getAll();
+            List<NSX> listNSX = nsxService.getAll();
+            List<DongSP> listDongSP = dongSPService.getAll();
+            List<MauSac> listMauSac = mauSacService.getAll();
+            model.addAttribute("listSanPham", listSanPham);
+            model.addAttribute("listNSX", listNSX);
+            model.addAttribute("listDongSP", listDongSP);
+            model.addAttribute("listMauSac", listMauSac);
             return "admin/ctsp/create";
         }else {
             chiTietSPService.saveOrUpdate(chiTietSPDTO);

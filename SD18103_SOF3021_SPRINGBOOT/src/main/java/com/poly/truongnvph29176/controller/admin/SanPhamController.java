@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
@@ -18,13 +19,14 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -60,54 +62,6 @@ public class SanPhamController {
         return "admin/home-admin";
     }
 
-//    @PostMapping("/store")
-//    public String store(@Valid @ModelAttribute("sp") SanPham sanPham,
-//                        @RequestParam(name = "imageSP", required = false) MultipartFile multipartFile,
-//                        BindingResult result) throws IOException {
-//        if(result.hasErrors()) {
-//            return "admin/san_pham/create";
-//        }else {
-//            if(!multipartFile.isEmpty()) {
-//                String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-//                sanPham.setImageSP(fileName);
-//                sanPhamService.saveOrUpdate(sanPham);
-//                String upload = "images/";
-//                UploadFileUtil.handleFileUpload(upload, fileName, multipartFile);
-//            }else {
-//                if(sanPham.getImageSP().isEmpty()) {
-//                    sanPham.setImageSP(null);
-//                    sanPhamService.saveOrUpdate(sanPham);
-//                }
-//            }
-//            sanPhamService.saveOrUpdate(sanPham);
-//            return "redirect:/admin/san-pham/index";
-//        }
-//    }
-
-
-//    @PostMapping("/store")
-//    public String store(@Valid @ModelAttribute("sp") SanPhamDTO sanPhamDTO,
-//                        @RequestParam("imageSP") MultipartFile multipartFile,
-//                        BindingResult result) throws IOException {
-//        String uuid = UUID.randomUUID().toString();
-//        String name = uuid + "_" + multipartFile.getOriginalFilename();
-//        String fileName = StringUtils.cleanPath(name);
-//        String uploadDir = "images/";
-//        Path uploadPath = Paths.get(uploadDir);
-//        if(result.hasErrors()) {
-//            return "admin/san_pham/create";
-//        }else {
-//            if (!Files.exists(uploadPath)) {
-//                Files.createDirectories(uploadPath);
-//            }
-//            Path filePath = uploadPath.resolve(fileName);
-//            Files.copy(multipartFile.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-//            sanPhamDTO.setMa(sanPhamService.maSPCount());
-//            sanPhamService.createSanPham(sanPhamDTO, filePath);
-//            return "redirect:/admin/san-pham/index";
-//        }
-//    }
-
     @PostMapping("/store")
     public String store(@Valid @ModelAttribute("sp") SanPhamDTO sanPhamDTO,
                         @RequestParam("imageSP") MultipartFile multipartFile,
@@ -117,7 +71,6 @@ public class SanPhamController {
         }else {
             SanPham sanPham = sanPhamMapper.convertToEntity(sanPhamDTO);
             sanPham.setImageSP(multipartFile.getOriginalFilename());
-            sanPham.setMa(sanPhamService.maSPCount());
             SanPham uploadImgSP = sanPhamService.saveOrUpdate(sanPham);
             if(uploadImgSP != null) {
                 try {
@@ -133,5 +86,51 @@ public class SanPhamController {
             }
             return "redirect:/admin/san-pham/index";
         }
+    }
+
+    @GetMapping("/edit/{id}")
+    public String edit(Model model, @PathVariable("id") SanPham sanPham) {
+        SanPhamDTO sanPhamDTO = sanPhamMapper.convertToDTO(sanPham);
+        model.addAttribute("views", "/views/admin/san_pham/create.jsp");
+        model.addAttribute("sp", sanPhamDTO);
+        model.addAttribute("action", "/admin/san-pham/update/" + sanPham.getId());
+        return "admin/home-admin";
+    }
+
+    @PostMapping("/update/{id}")
+    public String update(@Valid @ModelAttribute("sp") SanPhamDTO sanPhamDTO,
+                         @RequestParam("imageSP") MultipartFile multipartFile,
+                         BindingResult result) {
+        if(result.hasErrors()) {
+            return "admin/san_pham/create";
+        }else {
+            SanPham sanPham = sanPhamMapper.convertToEntity(sanPhamDTO);
+            sanPham.setImageSP(multipartFile.getOriginalFilename());
+            SanPham uploadImgSP = sanPhamService.saveOrUpdate(sanPham);
+            if(uploadImgSP != null) {
+                try {
+                    File saveFile = new File("src/main/webapp/images/");
+                    Path path = Paths.get(saveFile.getAbsolutePath()
+                            + File.separator
+                            + multipartFile.getOriginalFilename());
+                    System.out.println(path);
+                    Files.copy(multipartFile.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+                }catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            return "redirect:/admin/san-pham/index";
+        }
+    }
+
+    @GetMapping("/remove/{id}")
+    public String remove(@PathVariable("id") UUID id, RedirectAttributes redirectAttributes) {
+        try {
+            sanPhamService.deleteById(id);
+            redirectAttributes.addFlashAttribute("successMessage", "Xóa sản phẩm thành công.");
+        } catch (DataIntegrityViolationException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Không thể xóa sản phẩm do có bản ghi liên quan trong bảng ChiTietSP.");
+        }
+        return "redirect:/admin/san-pham/index";
     }
 }

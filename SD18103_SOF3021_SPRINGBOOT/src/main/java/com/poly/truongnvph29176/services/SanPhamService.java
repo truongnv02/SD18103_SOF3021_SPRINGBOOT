@@ -10,7 +10,7 @@ import java.util.UUID;
 public interface SanPhamService {
     List<SanPham> getAll();
 
-    SanPham createSanPham(SanPhamDTO sanPhamDTO, Path path);
+    SanPham createSanPham(SanPhamDTO sanPhamDTO);
 
     SanPham saveOrUpdate(SanPham sanPham);
 

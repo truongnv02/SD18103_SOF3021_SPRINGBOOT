@@ -5,7 +5,9 @@ import com.poly.truongnvph29176.model.dto.SanPhamDTO;
 import com.poly.truongnvph29176.model.mapper.SanPhamMapper;
 import com.poly.truongnvph29176.repositories.SanPhamRepository;
 import com.poly.truongnvph29176.services.SanPhamService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -26,9 +28,8 @@ public class SanPhamServiceImpl implements SanPhamService {
     }
 
     @Override
-    public SanPham createSanPham(SanPhamDTO sanPhamDTO, Path path) {
+    public SanPham createSanPham(SanPhamDTO sanPhamDTO) {
         SanPham sanPham = sanPhamMapper.convertToEntity(sanPhamDTO);
-        sanPham.setImageSP(path.toString());
         return sanPhamRepository.save(sanPham);
     }
 
@@ -44,7 +45,14 @@ public class SanPhamServiceImpl implements SanPhamService {
 
     @Override
     public void deleteById(UUID id) {
-        sanPhamRepository.deleteById(id);
+        SanPham sanPham = sanPhamRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy sản phẩm với ID: " + id));
+        try{
+            sanPhamRepository.delete(sanPham);
+        }catch (DataIntegrityViolationException e) {
+            throw new DataIntegrityViolationException("Không thể xóa sản phẩm với ID: " + id
+                    + " do có bản ghi liên quan trong bảng ChiTietSP.");
+        }
     }
 
     @Override

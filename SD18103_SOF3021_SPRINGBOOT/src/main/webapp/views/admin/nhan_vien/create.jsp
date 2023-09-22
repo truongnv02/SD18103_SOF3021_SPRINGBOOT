@@ -67,6 +67,7 @@
                         <option value="${ch.id}" ${ch.id == nv.cuaHang.id ? "selected" : ""}>${ch.ten}</option>
                     </c:forEach>
                 </f:select>
+                <f:errors path="cuaHang" element="span" cssClass="text-danger" />
             </div>
             <div class="col-6">
                 <label class="form-label">Chức vụ</label>
@@ -75,6 +76,7 @@
                         <option value="${cv.id}" ${cv.id == nv.chucVu.id ? "selected" : ""}>${cv.ten}</option>
                     </c:forEach>
                 </f:select>
+                <f:errors path="chucVu" element="span" cssClass="text-danger" />
             </div>
         </div>
         <div class="row mt-4">

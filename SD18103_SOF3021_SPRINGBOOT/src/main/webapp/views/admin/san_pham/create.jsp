@@ -12,14 +12,24 @@
         <f:form action="${action}" modelAttribute="sp" method="post" enctype="multipart/form-data">
             <div class="row mt-4">
                 <div class="col-6">
+                    <label class="form-label">Mã</label>
+                    <f:input type="text" path="ma" cssClass="form-control" />
+                    <f:errors path="ma" element="span" cssClass="text-danger" />
+                </div>
+                <div class="col-6">
                     <label class="form-label">Tên</label>
                     <f:input type="text" path="ten" cssClass="form-control" />
                     <f:errors path="ten" element="span" cssClass="text-danger" />
                 </div>
+            </div>
+            <div class="row mt-4">
                 <div class="col-6">
                     <label class="form-label">Hình ảnh</label>
                     <f:input type="file" path="imageSP" class="form-control" />
                     <f:errors path="imageSP" element="span" cssClass="text-danger" />
+                </div>
+                <div class="col-6">
+
                 </div>
             </div>
             <div class="row mt-4" style="justify-content: center">

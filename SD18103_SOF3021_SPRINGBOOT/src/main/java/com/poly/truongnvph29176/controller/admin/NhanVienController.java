@@ -53,8 +53,12 @@ public class NhanVienController {
     }
 
     @PostMapping("/store")
-    public String store(@Valid @ModelAttribute("nv") NhanVienDTO nhanVienDTO, BindingResult result) {
+    public String store(Model model, @Valid @ModelAttribute("nv") NhanVienDTO nhanVienDTO, BindingResult result) {
         if(result.hasErrors()) {
+            List<CuaHang> listCuaHang = cuaHangService.getAll();
+            List<ChucVu> listChucVu = chucVuService.getAll();
+            model.addAttribute("listCuaHang", listCuaHang);
+            model.addAttribute("listChucVu", listChucVu);
             return "admin/nhan_vien/create";
         }else {
             nhanVienDTO.setMa(nhanVienService.maNVCount());
@@ -77,8 +81,12 @@ public class NhanVienController {
     }
 
     @PostMapping("/update/{id}")
-    public String update(@Valid @ModelAttribute("nv") NhanVienDTO nhanVienDTO, BindingResult result) {
+    public String update(Model model, @Valid @ModelAttribute("nv") NhanVienDTO nhanVienDTO, BindingResult result) {
         if(result.hasErrors()) {
+            List<CuaHang> listCuaHang = cuaHangService.getAll();
+            List<ChucVu> listChucVu = chucVuService.getAll();
+            model.addAttribute("listCuaHang", listCuaHang);
+            model.addAttribute("listChucVu", listChucVu);
             return "admin/nhan_vien/create";
         }else {
             nhanVienService.updateNhanVien(nhanVienDTO);

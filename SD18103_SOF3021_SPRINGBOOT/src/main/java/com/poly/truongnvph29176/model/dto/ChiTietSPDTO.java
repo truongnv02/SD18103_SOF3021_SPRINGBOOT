@@ -44,8 +44,8 @@ public class ChiTietSPDTO {
     @Max(value = 3, message = "Năm bảo hành không quá ")
     private Integer namBH;
 
-    @Size(min = 1, max = 200, message = "số lượng ký tự lớn hơn 1 và nhỏ hơn 200")
-    @NotBlank(message = "Không được để trống")
+//    @Size(min = 1, max = 200, message = "số lượng ký tự lớn hơn 1 và nhỏ hơn 200")
+//    @NotBlank(message = "Không được để trống")
     private String moTa;
 
     @Min(value = 1, message = "Số lượng phải lớn hơn 1")

@@ -14,6 +14,9 @@
         <h3 style="text-align: center;margin-top:15px;">Không có dữ liệu</h3>
     </c:if>
     <c:if test="${ f:length(listSanPham) != 0 }">
+        <div>
+            <span class="text-danger">${errorMessage}</span>
+        </div>
         <table class="table">
             <thead>
             <tr>
@@ -30,8 +33,8 @@
                     <td>${sp.ten}</td>
                     <td><img src="../../../images/${sp.imageSP}" alt="Ảnh Sản Phẩm" style="width:70px; height: 60px;"></td>
                     <td>
-                        <a href="/admin/san-pham/edit/${sp.ma}" class="btn btn-success">Detail</a>
-                        <a href="/admin/san-pham/remove${sp.ma}" class="btn btn-danger"
+                        <a href="/admin/san-pham/edit/${sp.id}" class="btn btn-success">Detail</a>
+                        <a href="/admin/san-pham/remove/${sp.id}" class="btn btn-danger"
                          onclick="return confirm('Bạn có muốn xóa không ?')">
                             Delete
                         </a>

@@ -46,8 +46,8 @@
                     <td>${ctsp.giaBan}</td>
                     <td>${ctsp.moTa}</td>
                     <td>
-                        <a href="/admin/ctsp/detail/${ctsp.id}" class="btn btn-primary">Detail</a>
-                        <a href="/admin/ctsp/delete/${ctsp.id}" class="btn btn-danger"
+                        <a href="/admin/ctsp/edit/${ctsp.id}" class="btn btn-primary">Detail</a>
+                        <a href="/admin/ctsp/remove/${ctsp.id}" class="btn btn-danger"
                             onclick="return confirm('Bạn có muốn xóa không ?')">
                             Delete
                         </a>
