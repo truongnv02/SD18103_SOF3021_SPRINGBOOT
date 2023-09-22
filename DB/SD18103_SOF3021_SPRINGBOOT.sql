@@ -189,4 +189,4 @@ select * from HoaDon
 select * from GioHang
 select * from GioHangChiTiet
 
-delete from SanPham
+delete from DongSP

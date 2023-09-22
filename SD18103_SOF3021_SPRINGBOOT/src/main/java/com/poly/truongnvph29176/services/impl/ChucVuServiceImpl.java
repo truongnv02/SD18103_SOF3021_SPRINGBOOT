@@ -34,8 +34,9 @@ public class ChucVuServiceImpl implements ChucVuService {
     @Override
     public ChucVu updateChucVu(ChucVuDTO chucVuDTO) {
         ChucVu chucVu = chucVuMapper.convertToEntity(chucVuDTO);
-//        ChucVu chucVuId = chucVuReposirory.findById(chucVu.getId()).orElse(null);
-        return chucVuReposirory.save(chucVu);
+        ChucVu chucVuId = chucVuReposirory.findById(chucVu.getId()).orElse(null);
+        chucVuId.setTen(chucVuDTO.getTen());
+        return chucVuReposirory.save(chucVuId);
     }
 
     @Override

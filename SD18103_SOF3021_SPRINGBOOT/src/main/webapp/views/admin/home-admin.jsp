@@ -27,7 +27,7 @@
             <a class="list-group-item list-group-item-action list-group-item-light p-3"
                href="/admin/dong-sp/index">Dòng sản phẩm</a>
             <a class="list-group-item list-group-item-action list-group-item-light p-3"
-               href="/admin/chi-tiet-san-pham/index">Chi tiết Sản phẩm</a>
+               href="/admin/ctsp/index">Chi tiết Sản phẩm</a>
         </div>
     </div>
     <div class="container-fluid">

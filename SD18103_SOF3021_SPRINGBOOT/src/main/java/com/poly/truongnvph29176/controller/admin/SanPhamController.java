@@ -6,9 +6,11 @@ import com.poly.truongnvph29176.model.mapper.SanPhamMapper;
 import com.poly.truongnvph29176.repositories.SanPhamRepository;
 import com.poly.truongnvph29176.services.SanPhamService;
 import com.poly.truongnvph29176.utilities.UploadFileUtil;
+import jakarta.servlet.ServletContext;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
@@ -41,9 +43,6 @@ public class SanPhamController {
     private SanPhamDTO sanPhamDTO;
     @Autowired
     private SanPhamRepository sanPhamRepository;
-    @Autowired
-    private UploadFileUtil uploadFileUtil;
-
 
     @GetMapping("/index")
     public String index(Model model) {
@@ -86,25 +85,52 @@ public class SanPhamController {
 //    }
 
 
+//    @PostMapping("/store")
+//    public String store(@Valid @ModelAttribute("sp") SanPhamDTO sanPhamDTO,
+//                        @RequestParam("imageSP") MultipartFile multipartFile,
+//                        BindingResult result) throws IOException {
+//        String uuid = UUID.randomUUID().toString();
+//        String name = uuid + "_" + multipartFile.getOriginalFilename();
+//        String fileName = StringUtils.cleanPath(name);
+//        String uploadDir = "images/";
+//        Path uploadPath = Paths.get(uploadDir);
+//        if(result.hasErrors()) {
+//            return "admin/san_pham/create";
+//        }else {
+//            if (!Files.exists(uploadPath)) {
+//                Files.createDirectories(uploadPath);
+//            }
+//            Path filePath = uploadPath.resolve(fileName);
+//            Files.copy(multipartFile.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+//            sanPhamDTO.setMa(sanPhamService.maSPCount());
+//            sanPhamService.createSanPham(sanPhamDTO, filePath);
+//            return "redirect:/admin/san-pham/index";
+//        }
+//    }
+
     @PostMapping("/store")
     public String store(@Valid @ModelAttribute("sp") SanPhamDTO sanPhamDTO,
                         @RequestParam("imageSP") MultipartFile multipartFile,
-                        BindingResult result) throws IOException {
-        String uuid = UUID.randomUUID().toString();
-        String name = uuid + "_" + multipartFile.getOriginalFilename();
-        String fileName = StringUtils.cleanPath(name);
-        String uploadDir = "images/";
-        Path uploadPath = Paths.get(uploadDir);
+                        BindingResult result) {
         if(result.hasErrors()) {
             return "admin/san_pham/create";
         }else {
-            if (!Files.exists(uploadPath)) {
-                Files.createDirectories(uploadPath);
+            SanPham sanPham = sanPhamMapper.convertToEntity(sanPhamDTO);
+            sanPham.setImageSP(multipartFile.getOriginalFilename());
+            sanPham.setMa(sanPhamService.maSPCount());
+            SanPham uploadImgSP = sanPhamService.saveOrUpdate(sanPham);
+            if(uploadImgSP != null) {
+                try {
+                    File saveFile = new File("src/main/webapp/images/");
+                    Path path = Paths.get(saveFile.getAbsolutePath()
+                            + File.separator
+                            + multipartFile.getOriginalFilename());
+                    System.out.println(path);
+                    Files.copy(multipartFile.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+                }catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-            Path filePath = uploadPath.resolve(fileName);
-            Files.copy(multipartFile.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-            sanPhamDTO.setMa(sanPhamService.maSPCount());
-            sanPhamService.createSanPham(sanPhamDTO, filePath);
             return "redirect:/admin/san-pham/index";
         }
     }

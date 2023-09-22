@@ -5,7 +5,6 @@
 <head>
     <title>Title</title>
     <link rel="stylesheet" href="../../../css/bootstrap.min.css">
-    <link rel="stylesheet" href="/images/">
 </head>
 <body>
 <div class="container">
@@ -29,10 +28,13 @@
                 <tr>
                     <td>${sp.ma}</td>
                     <td>${sp.ten}</td>
-                    <td><img src="${sp.imageSP}" alt="Ảnh Sản Phẩm" style="width:70px; height: 60px;"></td>
+                    <td><img src="../../../images/${sp.imageSP}" alt="Ảnh Sản Phẩm" style="width:70px; height: 60px;"></td>
                     <td>
                         <a href="/admin/san-pham/edit/${sp.ma}" class="btn btn-success">Detail</a>
-                        <a href="/admin/san-pham/remove${sp.ma}" class="btn btn-success">Delete</a>
+                        <a href="/admin/san-pham/remove${sp.ma}" class="btn btn-danger"
+                         onclick="return confirm('Bạn có muốn xóa không ?')">
+                            Delete
+                        </a>
                     </td>
                 </tr>
             </c:forEach>

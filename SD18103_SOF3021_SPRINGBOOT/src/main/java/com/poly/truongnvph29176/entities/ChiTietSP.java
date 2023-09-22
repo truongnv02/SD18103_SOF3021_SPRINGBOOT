@@ -49,13 +49,13 @@ public class ChiTietSP implements Serializable {
     private DongSP dongSP;
 
     @Column(name = "NamBH")
-    private int namBH;
+    private Integer namBH;
 
     @Column(name = "MoTa")
     private String moTa;
 
     @Column(name = "SoLuongTon")
-    private int soLuongTon;
+    private Integer soLuongTon;
 
     @Column(name = "GiaNhap", columnDefinition = "Decimal(20,0)")
     private BigDecimal giaNhap;

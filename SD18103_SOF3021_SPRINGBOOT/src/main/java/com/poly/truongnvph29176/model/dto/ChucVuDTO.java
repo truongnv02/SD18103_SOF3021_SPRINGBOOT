@@ -18,6 +18,7 @@ import java.util.UUID;
 public class ChucVuDTO {
     private UUID id;
     private String ma;
+
     @NotBlank(message = "Khong duoc de trong")
     @Size(min = 1, max = 50, message = "So luong ki tu lon hon 1 va nho hon 50")
     private String ten;
