@@ -61,5 +61,5 @@ public class ChiTietSPDTO {
     @DecimalMin(value = "0.0", message = "Giá bán không được nhỏ hơn 0")
     @DecimalMax(value = "1000000000.0", message = "Giá bán không được lớn hơn 1000000000")
     @NotNull(message = "Không được để trống")
-    private BigDecimal giaBan;
+    private float giaBan;
 }

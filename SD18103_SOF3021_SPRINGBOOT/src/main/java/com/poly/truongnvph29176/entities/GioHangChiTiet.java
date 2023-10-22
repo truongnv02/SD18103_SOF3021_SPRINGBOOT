@@ -1,8 +1,10 @@
 package com.poly.truongnvph29176.entities;
 
+import com.poly.truongnvph29176.model.request.GioHangChiTietRequest;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.IdClass;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -20,19 +22,21 @@ import java.math.BigDecimal;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@IdClass(GioHangChiTietRequest.class)
 public class GioHangChiTiet implements Serializable {
+
     @Id
     @ManyToOne
-    @JoinColumn(name = "IdGioHang", referencedColumnName = "id")
+    @JoinColumn(name = "IdGioHang")
     private GioHang gioHang;
 
     @Id
     @ManyToOne
-    @JoinColumn(name = "IdChiTietSP", referencedColumnName = "id")
+    @JoinColumn(name = "IdChiTietSP")
     private ChiTietSP chiTietSP;
 
     @Column(name = "SoLuong")
-    private int soLuong;
+    private Integer soLuong;
 
     @Column(name = "DonGia")
     private BigDecimal donGia;

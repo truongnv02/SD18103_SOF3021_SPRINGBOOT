@@ -14,7 +14,7 @@ package com.poly.truongnvph29176.config;
 //
 //import java.util.ArrayList;
 //import java.util.List;
-//
+
 //@Configuration
 //@EnableWebSecurity
 public class SecurityConfig {
@@ -48,7 +48,7 @@ public class SecurityConfig {
 //        httpSecurity.authorizeHttpRequests(
 //                req -> req
 //                        .requestMatchers("/admin/**")
-//                        .hasRole("ADMIN")
+//                        .hasAnyRole("ADMIN")
 //                        .anyRequest()
 //                        .permitAll()
 //        )

@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Title</title>
-    <link rel="stylesheet" href="../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../assets/css/bootstrap.min.css">
 </head>
 <body>
 <div class="d-flex mt-5" style="margin-left: 20px" id="wrapper" >
@@ -28,6 +28,8 @@
                href="/admin/dong-sp/index">Dòng sản phẩm</a>
             <a class="list-group-item list-group-item-action list-group-item-light p-3"
                href="/admin/ctsp/index">Chi tiết Sản phẩm</a>
+            <a class="list-group-item list-group-item-action list-group-item-light p-3"
+               href="/admin/gio-hang/index">Giỏ hàng</a>
         </div>
     </div>
     <div class="container-fluid">

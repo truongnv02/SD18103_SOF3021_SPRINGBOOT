@@ -1,8 +1,12 @@
 package com.poly.truongnvph29176.services.impl;
 
 import com.poly.truongnvph29176.entities.KhachHang;
+import com.poly.truongnvph29176.model.dto.GioHangDTO;
 import com.poly.truongnvph29176.model.dto.KhachHangDTO;
 import com.poly.truongnvph29176.model.mapper.KhachHangMapper;
+import com.poly.truongnvph29176.model.request.LoginAdminRequest;
+import com.poly.truongnvph29176.model.request.LoginUserRequest;
+import com.poly.truongnvph29176.repositories.GioHangRepository;
 import com.poly.truongnvph29176.repositories.KhachHangRepository;
 import com.poly.truongnvph29176.services.KhachHangService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +21,11 @@ public class KhachHangServiceImpl implements KhachHangService {
     private KhachHangRepository khachHangRepository;
     @Autowired
     private KhachHangMapper khachHangMapper;
+    @Autowired
+    private GioHangRepository gioHangRepository;
+    @Autowired
+    private GioHangDTO gioHangDTO;
+
 
     @Override
     public List<KhachHang> getAll() {
@@ -48,6 +57,21 @@ public class KhachHangServiceImpl implements KhachHangService {
         khachHangId.setThanhPho(khachHangDTO.getThanhPho());
         khachHangId.setQuocGia(khachHangDTO.getQuocGia());
         return khachHangRepository.save(khachHangId);
+    }
+
+    @Override
+    public KhachHangDTO login(LoginUserRequest loginUserRequest) {
+        KhachHang khachHang = khachHangRepository.login(loginUserRequest.getEmail(), loginUserRequest.getMatKhau());
+        if(khachHang != null) {
+            return khachHangMapper.convertToDTO(khachHang);
+        }
+        return null;
+    }
+
+    @Override
+    public KhachHangDTO register(KhachHangDTO khachHangDTO) {
+        KhachHang khachHang = khachHangMapper.convertToEntity(khachHangDTO);
+        return khachHangMapper.convertToDTO(khachHangRepository.save(khachHang));
     }
 
     @Override

@@ -188,5 +188,3 @@ select *  from KhachHang
 select * from HoaDon
 select * from GioHang
 select * from GioHangChiTiet
-
-delete from DongSP

@@ -3,6 +3,7 @@ package com.poly.truongnvph29176.services.impl;
 import com.poly.truongnvph29176.entities.NhanVien;
 import com.poly.truongnvph29176.model.dto.NhanVienDTO;
 import com.poly.truongnvph29176.model.mapper.NhanVienMapper;
+import com.poly.truongnvph29176.model.request.LoginAdminRequest;
 import com.poly.truongnvph29176.repositories.NhanVienRepository;
 import com.poly.truongnvph29176.services.NhanVienService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,5 +76,15 @@ public class NhanVienServiceImpl implements NhanVienService {
             }
         }
         return code;
+    }
+
+    @Override
+    public NhanVienDTO checkLogin(LoginAdminRequest login) {
+        NhanVien nhanVien = nhanVienRepository.login(login.getEmail(), login.getMatKhau());
+        if(nhanVien != null) {
+            return nhanVienMapper.convertToDTO(nhanVien);
+        }else {
+            return null;
+        }
     }
 }

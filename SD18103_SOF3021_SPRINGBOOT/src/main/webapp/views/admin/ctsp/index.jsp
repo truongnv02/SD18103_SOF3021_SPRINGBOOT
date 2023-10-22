@@ -4,7 +4,7 @@
 <html>
 <head>
     <title>Title</title>
-    <link rel="stylesheet" href="../../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../assets/css/bootstrap.min.css">
 </head>
 <body>
 <div class="container">
@@ -51,6 +51,7 @@
                             onclick="return confirm('Bạn có muốn xóa không ?')">
                             Delete
                         </a>
+                        <a href="#" class="btn btn-success">Add to cart</a>
                     </td>
                 </tr>
             </c:forEach>
